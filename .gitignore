@@ -1,0 +1,8 @@
+*.swp
+*.pyc
+.env/*
+lab1and2/.ipynb_checkpoints/
+lab3/.ipynb_checkpoints/
+lab4/.ipynb_checkpoints/
+lab5/.ipynb_checkpoints/
+prelab/simplepg/
