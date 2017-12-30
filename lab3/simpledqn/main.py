@@ -189,6 +189,19 @@ class DQN(object):
         # Hint3: You might also find https://docs.chainer.org/en/stable/reference/generated/chainer.functions.select_item.html useful
         loss = C.Variable(np.array([0.]))  # TODO: replace this line
         "*** YOUR CODE HERE ***"
+        num_obs = len(l_obs)
+        num_states = self._get_obs_dim(self._env)
+        num_actions = self._get_act_dim(self._env)
+
+        # Qs have dimension num_obs x num_actions
+        q = self._q.forward(l_obs)
+        q2 = self._q.forward(l_next_obs)
+
+        y = l_rew
+        for i in range(num_obs):
+            if not l_done[i]:
+                y[i] += self._discount * np.max(q2[i].data)
+        loss = C.Variable(np.array([F.mean(F.square(y - F.select_item(q, l_act))).data]))
         return loss
 
     def compute_double_q_learning_loss(self, l_obs, l_act, l_rew, l_next_obs, l_done):
